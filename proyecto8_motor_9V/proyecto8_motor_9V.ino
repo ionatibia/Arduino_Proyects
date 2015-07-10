@@ -1,3 +1,4 @@
+//constantes
 const int switchPin = 2;
 const int motorPin = 9;
 int swtchState = 0;
