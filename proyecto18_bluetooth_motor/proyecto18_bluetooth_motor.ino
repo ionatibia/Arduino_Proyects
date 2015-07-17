@@ -8,7 +8,7 @@ int led = 4;
 //Motor derecha
 int IN1 = 6;
 int IN2 = 7;
-int ENA = A5;
+int ENA = 5;
 //Motor izquierda
 int IN3 = 8;
 int IN4 = 9;
