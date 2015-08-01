@@ -63,9 +63,15 @@ void loop() {
   }
 
   //si el BT esta disponible
+  Serial.println(potencia);
   if(blue.available()){
     //leer BT
     orden = blue.read();
+    if(orden == 'p'){
+      potencia = blue.parseInt();
+      continuar(potencia);
+    }
+    
     switch(orden){
       case 'a':
         if(comprobarDelante()){
@@ -164,6 +170,20 @@ boolean comprobarDetras(){
     return true;
   }else{
     return false;
+  }
+}
+
+void continuar(int potencia){
+  if(digitalRead(IN1) == 0 && digitalRead(IN3) == 0 && digitalRead(controlLed) == HIGH){
+    adelante(potencia);
+  }else if(digitalRead(IN1) == 1 && digitalRead(IN3) == 1 && digitalRead(controlLed) == HIGH){
+    atras(potencia);
+  }else if(digitalRead(IN2) == 0 && digitalRead(controlLed) == HIGH){
+    derecha(potencia);
+  }else if(digitalRead(controlLed) == LOW){
+    stopM();
+  }else {
+    izquierda(potencia);
   }
 }
 
