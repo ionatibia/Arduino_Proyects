@@ -112,6 +112,7 @@ void loop() {
   }
 }
 
+//métodos direcciones vehículo
   void adelante(int potencia){
     digitalWrite(IN1,LOW);
     digitalWrite(IN2,HIGH);
@@ -189,6 +190,7 @@ void loop() {
     analogWrite(ENB,0);
   }
 
+//método cambio de potencia y continuar dirección
   void continuar(int potencia){
     if(estado == 'a'){
       adelante(potencia);
