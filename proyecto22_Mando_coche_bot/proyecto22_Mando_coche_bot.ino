@@ -64,11 +64,13 @@ void loop() {
     case 'o':
       adelanteI(potencia);
       digitalWrite(frontLed,HIGH);
+      estado = 'o';
     break;
 
     case 'e':
       adelanteD(potencia);
       digitalWrite(frontLed,HIGH);
+      estado = 'e';
     break;
 
     case 'b':
@@ -80,11 +82,13 @@ void loop() {
     case 'z':
       atrasI(potencia);
       digitalWrite(frontLed,HIGH);
+      estado = 'z';
     break;
 
     case 'x':
       atrasD(potencia);
       digitalWrite(frontLed,HIGH);
+      estado = 'x';
     break;
 
     case 'i':
@@ -196,5 +200,13 @@ void loop() {
       derecha(potencia);
     }else if(estado == 's'){
       stopM();
+    }else if(estado == 'o'){
+      adelanteI(potencia);
+    }else if(estado == 'e'){
+      adelanteD(potencia);
+    }else if(estado == 'z'){
+      atrasI(potencia);
+    }else if(estado == 'x'){
+      atrasD(potencia);
     }
   }
