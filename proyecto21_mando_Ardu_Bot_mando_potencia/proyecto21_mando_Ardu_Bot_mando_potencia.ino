@@ -4,7 +4,7 @@
 #include <Servo.h>
 
 //Objetos
-SoftwareSerial blue(2,3);//tx,rx
+SoftwareSerial blue(3,4);//tx,rx
 Ultrasonic ultrasonic(5,4);//trig,echo,frecuencia
 Servo myServo;
 
@@ -64,6 +64,7 @@ void loop() {
 
   //si el BT esta disponible
   Serial.println(potencia);
+  Serial.println(orden);
   if(blue.available()){
     //leer BT
     orden = blue.read();
