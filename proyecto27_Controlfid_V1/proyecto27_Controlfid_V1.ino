@@ -8,30 +8,41 @@
 /*
 *	Objects
 */
-RFID rfid(10,9);
+RFID rfid(7,9);
 EthernetClient client;
 
 /*
 *	Arguments
 */
+int ledVerde = 2;
+int ledAmarillo = 3;
+int ledRojo = 4;
 String tarjeta = "";
-String result = "";
 String url = "";
 String room = "101";
+String respuesta = "";
 int veces = 0;
+boolean result;
 byte mac[] = {
 	0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02
 };
 char server[] = "controlfid.zubirimanteoweb.com";
+
 
 /*
 *	Setup
 */
 void setup()
 {
+  pinMode(ledVerde,OUTPUT);
+  pinMode(ledAmarillo,OUTPUT);
+  pinMode(ledRojo,OUTPUT);
 	Serial.begin(9600);
 	SPI.begin();
 	rfid.init();
+  digitalWrite(ledVerde,LOW);
+  digitalWrite(ledAmarillo,LOW);
+  digitalWrite(ledRojo,LOW);
 
 	//Start Ethernet connection
 	if(Ethernet.begin(mac) == 0){
@@ -51,20 +62,29 @@ void setup()
 void loop()
 {
 	if (rfid.isCard()) {
+    digitalWrite(ledAmarillo,HIGH);
           if (rfid.readCardSerial()) { 
                  for(int i=0; i<=4; i++){
                      tarjeta+=String(rfid.serNum[i]);
                  }
+                 Serial.println("GET /presencia?idT="+tarjeta+"&time=08:00:00&room="+room);
                  if(client.connect(server,80)){
                      Serial.println("Connected successfull");
-                     client.println("GET /presencia?idT="+tarjeta+"&time=08:00:00&room="+room);
+                     client.println("GET /presencia?idT="+tarjeta+"&time=08:00:00&room="+room+" HTTP/1.0");
                      client.println("Host: controlfid.zubirimanteoweb.com\r\n");
                      Serial.println("GET /presencia?idT="+tarjeta+"&time=08:00:00&room="+room);
                      delay(1000);
                      tarjeta="";
+                     result = false;
+                     respuesta = "";
 
                  }else{
                  	Serial.println("Connection failed");
+                   digitalWrite(ledAmarillo,LOW);
+                   digitalWrite(ledRojo,HIGH);
+                   delay(1000);
+                   digitalWrite(ledRojo,LOW);
+                  tarjeta="";
                  }//if client.connect
           }
     }  
@@ -77,11 +97,27 @@ void loop()
         	veces+=1;
         }
         if(veces == 9){
+          if(!result){
             if(c == 'o'){
-           		Serial.println("Ha devuelto ok");
-			}else if(c == 'k'){
-           		Serial.println("Ha devuelto ko");
-        	}
+              digitalWrite(ledAmarillo,LOW);
+              digitalWrite(ledVerde,HIGH);
+              Serial.println("Ha devuelto ok");
+              result = true;
+              client.stop();
+              veces = 0;
+              delay(1000);
+              digitalWrite(ledVerde,LOW);
+            }else if(c == 'k'){
+              digitalWrite(ledAmarillo,LOW);
+              digitalWrite(ledRojo,HIGH);
+              Serial.println("Ha devuelto ko");
+              result = true;
+              client.stop();
+              veces = 0;
+              delay(1000);
+              digitalWrite(ledRojo,LOW);
+            }
+          }
         }
     }
 
@@ -91,16 +127,8 @@ void loop()
     /*
     *	Check
     */
-	  // if the server's disconnected, stop the client:
-	if (!client.connected()) {
-    	Serial.println();
-    	Serial.println("disconnecting.");
-    	client.stop();
-    // do nothing forevermore:
-    while (true);
-  	}//if !client.connected()
 
-/*	switch (Ethernet.maintain())
+	switch (Ethernet.maintain())
   {
     case 1:
       //renewed fail
@@ -132,7 +160,7 @@ void loop()
       //nothing happened
       break;
 
-  }//Ethernet.maintain*/
+  }//Ethernet.maintain
 }//loop
 
 
