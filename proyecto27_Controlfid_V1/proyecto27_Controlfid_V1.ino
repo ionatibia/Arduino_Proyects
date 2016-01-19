@@ -19,7 +19,7 @@ int ledAmarillo = 3;
 int ledRojo = 4;
 String tarjeta = "";
 String url = "";
-String room = "101";
+String room = "9";
 String respuesta = "";
 int veces = 0;
 boolean result;
@@ -67,7 +67,7 @@ void loop()
                  for(int i=0; i<=4; i++){
                      tarjeta+=String(rfid.serNum[i]);
                  }
-                 Serial.println("GET /presencia?idT="+tarjeta+"&time=08:00:00&room="+room);
+                 rfid.halt();
                  if(client.connect(server,80)){
                      Serial.println("Connected successfull");
                      client.println("GET /presencia?idT="+tarjeta+"&time=08:00:00&room="+room+" HTTP/1.0");
@@ -88,7 +88,7 @@ void loop()
                  }//if client.connect
           }
     }  
-    rfid.halt();
+    
 
     if(client.available()){
         char c = client.read();
@@ -160,7 +160,7 @@ void loop()
       //nothing happened
       break;
 
-  }//Ethernet.maintain
+  }//Ethernet.maintain*/
 }//loop
 
 
