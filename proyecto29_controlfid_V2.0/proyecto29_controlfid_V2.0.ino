@@ -4,6 +4,7 @@
 #include <SPI.h>
 #include <RFID.h>
 #include <Ethernet.h>
+#include <TimerOne.h>
 
 /*
 *	Objects
@@ -53,9 +54,25 @@ void setup()
 
 	printIPAddress();
 
+  Timer1.initialize(15000000);
+  Timer1.attachInterrupt(algo);
 
 }//setup
 
+void algo(){
+  if(client.connect(server,80)){
+                    digitalWrite(ledAmarillo, HIGH);
+                     Serial.println("Connected successfull");
+                     client.println("GET /presencia/dispositivos?ok=1 HTTP/1.0");
+                     client.println("Host: controlfid.zubirimanteoweb.com\r\n");
+                     digitalWrite(ledAmarillo, LOW);
+                     digitalWrite(ledVerde, HIGH);
+                     delay(1000);
+                     digitalWrite(ledVerde, LOW);
+                 }else{
+                  Serial.println("Connection failed");
+                 }//if client.connect
+}
 /*
 *	Loop
 */
@@ -122,45 +139,6 @@ void loop()
     }
 
 
-
-
-    /*
-    *	Check
-    */
-/*
-	switch (Ethernet.maintain())
-  {
-    case 1:
-      //renewed fail
-      Serial.println("Error: renewed fail");
-      break;
-
-    case 2:
-      //renewed success
-      Serial.println("Renewed success");
-
-      //print your local IP address:
-      printIPAddress();
-      break;
-
-    case 3:
-      //rebind fail
-      Serial.println("Error: rebind fail");
-      break;
-
-    case 4:
-      //rebind success
-      Serial.println("Rebind success");
-
-      //print your local IP address:
-      printIPAddress();
-      break;
-
-    default:
-      //nothing happened
-      break;
-
-  }//Ethernet.maintain*/
 }//loop
 
 
@@ -172,6 +150,5 @@ void printIPAddress()
     Serial.print(Ethernet.localIP()[thisByte], DEC);
     Serial.print(".");
   }
-
   Serial.println();
 }//printIPAddress

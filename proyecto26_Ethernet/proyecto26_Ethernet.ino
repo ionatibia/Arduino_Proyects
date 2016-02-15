@@ -26,7 +26,7 @@ String result = "";
 byte mac[] = {
   0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02
 };
-char server[] = "controlfid.zubirimanteoweb.com";    // name address for Google (using DNS)
+char server[] = "10.14.1.27";    // name address for Google (using DNS)
 
 // Initialize the Ethernet client library
 // with the IP address and port of the server
@@ -54,7 +54,7 @@ void setup() {
     if (client.connect(server, 80)) {
     Serial.println("connected");
     // Make a HTTP request:
-    client.println("GET /presencia?idT=2&time=08:00:00&room=101 HTTP/1.0");
+    client.println("GET /presencia?num_tarjeta=2&time=08:00:00&room=101 HTTP/1.0");
     client.println("Host: controlfid.zubirimanteoweb.com\r\n"); 
   } else {
     // if you didn't get a connection to the server:
