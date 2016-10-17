@@ -43,12 +43,12 @@ void loop() {
     //s el estado es encendid
   	if (onOffSwitchState == HIGH)
   	{
-      //cambiar el estado del motor a 1
+      //cambiar el estado del motor
   		motorEnabled = !motorEnabled;
   	}
   }
 
-  //l mism que para el enableMotor
+  //l mism que para la direccion
   if (directionSwitchState != previousDirectionSwitchState)
   {
   	if (directionSwitchState == HIGH)

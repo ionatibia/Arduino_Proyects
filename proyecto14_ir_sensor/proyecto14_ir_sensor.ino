@@ -14,8 +14,8 @@ void loop()
    { 
          uint8_t oldSREG = SREG;  // Parar las interrupciones
          cli();
-         if (IRProtocol)          // Si reconoce el protocolo
-            {
+        /* if (IRProtocol)          // Si reconoce el protocolo
+            {*/
                  Serial.print("Protocol:");
                  Serial.println(IRProtocol);
                  Serial.print("Address:");
@@ -23,7 +23,7 @@ void loop()
                  Serial.print("Command:");
                  Serial.println(IRCommand, HEX);
                  IRProtocol = 0;
-            }
+          //  }
          SREG = oldSREG;
     }
 

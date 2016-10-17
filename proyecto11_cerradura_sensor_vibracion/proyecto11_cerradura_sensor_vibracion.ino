@@ -81,7 +81,7 @@ boolean checkForKnock(int value){
 		Serial.print(value);
 		return true;
 	}else{
-		Serial.print("\nNNNNNNNNNNNNNNNNNNNValor NO valido: ");
+		Serial.print("\nValor NO valido: ");
 		Serial.print(value);
 		return false;
 	}

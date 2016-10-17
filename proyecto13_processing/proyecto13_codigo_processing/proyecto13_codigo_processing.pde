@@ -7,7 +7,7 @@ void setup()
 {
 	colorMode(HSB,255);
 	logo = loadImage("https://www.arduino.cc/en/pub/skins/arduinoWide/img/logo.png");
-	size(logo.width, logo.height);
+	size(600, 600);
 	println("Available serial ports: ");
 	println(Serial.list());
 
